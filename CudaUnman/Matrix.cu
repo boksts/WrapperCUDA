@@ -6,8 +6,10 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define BLOCK_SIZE 2
+#define BLOCK_SIZE 8
 
+
+//тансопнирование матрицы
 __global__ void transpose(double* inputMatrix, double* outputMatrix, int width, int height){
 	int x = blockDim.x * blockIdx.x + threadIdx.x;
 	int y = blockDim.y * blockIdx.y + threadIdx.y;
@@ -24,7 +26,6 @@ double *Transp_CUDA(double *a, int N, int M){
 	double* a_t_dev; //Транспонированная матрица 
 	double* a_t1_dev;
 
-	
 	cudaMalloc((void**)&a_dev, N*M * sizeof(double));
 	cudaMalloc((void**)&a_t_dev, N*M * sizeof(double));
 
@@ -45,23 +46,24 @@ double *Transp_CUDA(double *a, int N, int M){
 	cudaFree(a_t_dev);
 
 	return a_t;
-	
 	delete[] a_t;
 }
 
 
+//умножение матриц
 __global__ void matMult(double *a, double *b, int M, int N, int Q, double * c)
 {
 	int   i = blockDim.x * blockIdx.x + threadIdx.x;
-	int   j = blockDim.y * blockIdx.y + threadIdx.y;
 
-	if (i < M  && j < Q){
+	if (i < M  ){
+		for (int j = 0; j < Q; j++) {
 			c[i*Q + j] = 0;
 			for (int k = 0; k < N; k++)
 				c[i*Q + j] += a[i*N + k] * b[k*Q + j];
-
+		}
 	}
 }
+
 
 double *Mult_CUDA(double *a, double *b, int M, int N, int Q)
 {
@@ -78,11 +80,10 @@ double *Mult_CUDA(double *a, double *b, int M, int N, int Q)
 
 	//определение размера грида
 	int gridSizeX = (M / BLOCK_SIZE) + ((M % BLOCK_SIZE) > 0 ? 1 : 0);
-	int gridSizeY = (Q / BLOCK_SIZE) + ((Q % BLOCK_SIZE) > 0 ? 1 : 0);
 
 	//определение числа блоков и потоков
-	dim3 threads(BLOCK_SIZE, BLOCK_SIZE);
-	dim3 blocks(gridSizeX, gridSizeY);
+	dim3 threads(BLOCK_SIZE);
+	dim3 blocks(gridSizeX);
 
 	cudaMemcpy(adev, a, sizeof(double) *M*N, cudaMemcpyHostToDevice);
 	cudaMemcpy(bdev, b, sizeof(double) *Q*N, cudaMemcpyHostToDevice);
@@ -91,9 +92,6 @@ double *Mult_CUDA(double *a, double *b, int M, int N, int Q)
 	cudaThreadSynchronize();
 
 	cudaMemcpy(c, cdev, sizeof(double) *M*Q, cudaMemcpyDeviceToHost);
-
-	/*	for (int i = 0; i < N*N; i++)
-	c[i] = b[i]+a[i];*/
 
 	cudaFree(adev);
 	cudaFree(bdev);
@@ -105,6 +103,7 @@ double *Mult_CUDA(double *a, double *b, int M, int N, int Q)
 }
 
 
+//умножение матрицы на вектор
 __global__ void matMultVector(double *a, double *b, int m, int n, double * c)
 {
 	int tid = blockDim.x * blockIdx.x + threadIdx.x;

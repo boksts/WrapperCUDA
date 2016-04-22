@@ -65,6 +65,7 @@
             this.rbEiler = new System.Windows.Forms.RadioButton();
             this.label1 = new System.Windows.Forms.Label();
             this.btnDiffEq = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -85,6 +86,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label13);
             this.tabPage1.Controls.Add(this.button2);
             this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.label12);
@@ -103,7 +105,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(160, 54);
+            this.button2.Location = new System.Drawing.Point(32, 305);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(186, 51);
             this.button2.TabIndex = 10;
@@ -113,7 +115,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(271, 316);
+            this.button1.Location = new System.Drawing.Point(271, 305);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(186, 51);
             this.button1.TabIndex = 9;
@@ -134,7 +136,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(336, 127);
+            this.label11.Location = new System.Drawing.Point(336, 28);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(110, 20);
             this.label11.TabIndex = 4;
@@ -143,7 +145,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(86, 127);
+            this.label10.Location = new System.Drawing.Point(74, 28);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(89, 20);
             this.label10.TabIndex = 3;
@@ -151,7 +153,7 @@
             // 
             // rtbResult
             // 
-            this.rtbResult.Location = new System.Drawing.Point(271, 150);
+            this.rtbResult.Location = new System.Drawing.Point(271, 51);
             this.rtbResult.Name = "rtbResult";
             this.rtbResult.Size = new System.Drawing.Size(229, 135);
             this.rtbResult.TabIndex = 2;
@@ -159,7 +161,7 @@
             // 
             // rtbMatrix
             // 
-            this.rtbMatrix.Location = new System.Drawing.Point(18, 150);
+            this.rtbMatrix.Location = new System.Drawing.Point(18, 51);
             this.rtbMatrix.Name = "rtbMatrix";
             this.rtbMatrix.Size = new System.Drawing.Size(229, 135);
             this.rtbMatrix.TabIndex = 1;
@@ -167,11 +169,11 @@
             // 
             // btnMatrix
             // 
-            this.btnMatrix.Location = new System.Drawing.Point(18, 316);
+            this.btnMatrix.Location = new System.Drawing.Point(155, 202);
             this.btnMatrix.Name = "btnMatrix";
             this.btnMatrix.Size = new System.Drawing.Size(186, 51);
             this.btnMatrix.TabIndex = 0;
-            this.btnMatrix.Text = "Результат";
+            this.btnMatrix.Text = "Транспонирование";
             this.btnMatrix.UseVisualStyleBackColor = true;
             this.btnMatrix.Click += new System.EventHandler(this.btnMatrix_Click);
             // 
@@ -463,6 +465,16 @@
             this.btnDiffEq.UseVisualStyleBackColor = true;
             this.btnDiffEq.Click += new System.EventHandler(this.button1_Click);
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label13.Location = new System.Drawing.Point(6, 267);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(124, 25);
+            this.label13.TabIndex = 11;
+            this.label13.Text = "Умножение";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -521,6 +533,7 @@
         private System.Windows.Forms.RichTextBox rtbResult;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label13;
     }
 }
 

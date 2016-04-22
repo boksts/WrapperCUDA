@@ -7,6 +7,7 @@ double* MyCudaMathFuncs::DiffEquations::_Eiler(double t0, double tmax, double ta
 {
 	return Eiler_CUDA(t0, tmax, tau);
 }
+
 double* MyCudaMathFuncs::DiffEquations::_RK2(double t0, double tmax, double tau)
 {
 	return RK2_CUDA(t0, tmax, tau);

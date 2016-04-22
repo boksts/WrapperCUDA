@@ -41,9 +41,6 @@ array<double> ^CppWrapper::MathFuncsDiffEquations::RK4(double t0, double tmax, d
 
 
 
-
-
-
 //интегралы
 double CppWrapper::MathFuncsIntegral::Simpson(float a, float b, int n, FDelegate ^ fdelegate){
 	delegatePointer = (void*)Marshal::GetFunctionPointerForDelegate(fdelegate).ToPointer();

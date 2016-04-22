@@ -87,6 +87,7 @@ namespace CSharp
         }
 
         //матрицы
+        //транспонирование
         private void btnMatrix_Click(object sender, EventArgs e)
         {
             int N = 4;
@@ -119,6 +120,7 @@ namespace CSharp
 
         }
 
+        //матрица на вектор
         private void button1_Click_1(object sender, EventArgs e) {
             int N = 4;
             int M = 10;
@@ -137,6 +139,8 @@ namespace CSharp
             c = myfunc.MultVector(a, b, M, N);
         }
 
+
+        //матрица на матрицу
         private void button2_Click(object sender, EventArgs e) {
             int M = 3;
             int N = 4;
@@ -147,11 +151,11 @@ namespace CSharp
 
             for (int i = 0; i < M; i++)
                 for (int j = 0; j < N; j++)
-                    A[i * N + j] = i;
+                    A[i * N + j] = i+j;
 
             for (int i = 0; i < N; i++)
                 for (int j = 0; j < Q; j++)
-                    B[i * Q + j] = j;
+                    B[i * Q + j] = j * 3.1;
 
             MathFuncsMatrix myfunc = new MathFuncsMatrix();
 
