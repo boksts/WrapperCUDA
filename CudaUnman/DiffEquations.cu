@@ -16,7 +16,7 @@ __device__ double func(int i, double y1, double y2, double y3) {
 
 }
 
-__global__ void kernel(double *y, int t, double tau) {
+__global__ void RK4(double *y, int t, double tau) {
 	int idx = threadIdx.x;
 	int i = (t - 1)*n;
 	__shared__ double r1[n], r2[n], r3[n], r4[n];
@@ -30,9 +30,24 @@ __global__ void kernel(double *y, int t, double tau) {
 	y[i + n + idx] = y[i + idx] + (r1[idx] + 2.0*r2[idx] + 2.0*r3[idx] + r4[idx]) / 6.0;
 }
 
+__global__ void Eiler(double *y, int t, double tau) {
+	int idx = threadIdx.x;
+	int i = (t - 1)*n;
+	y[i + n + idx] = y[i + idx] + tau*func(idx, y[i], y[i + 1], y[i + 2]);
+}
 
+__global__ void RK2(double *y, int t, double tau) {
+	int idx = threadIdx.x;
+	int i = (t - 1)*n;
+	__shared__ double r1[n], r2[n];
+	r1[idx] = tau*func(idx, y[i], y[i + 1], y[i + 2]);
+	__syncthreads();
+	r2[idx] = tau*func(idx, y[i] + r1[0], y[i + 1] +r1[1], y[i + 2] + r1[2]);
+	
+	y[i + n + idx] = y[i + idx] + (r1[idx] + r2[idx]) * 0.5;
+}
 
-double *RK4_CUDA(double t0, double tmax, double tau) {
+double *Compute(double t0, double tmax, double tau, int method){
 	double time = 0.0;
 	//число шагов
 	int nn = (int)((tmax - t0) / tau);
@@ -49,8 +64,24 @@ double *RK4_CUDA(double t0, double tmax, double tau) {
 
 	cudaMemcpy(yDev, y, size, cudaMemcpyHostToDevice);
 
-	for (int t = 1; t<nn; t++) {
-		kernel << <1, n >> >(yDev, t, tau);
+	 
+	switch (method){
+		case 1: {
+			for (int t = 1; t<nn; t++)
+				Eiler << <1, n >> >(yDev, t, tau);
+			break;
+		}
+		case 2: {
+			for (int t = 1; t<nn; t++)
+				RK2 << <1, n >> >(yDev, t, tau);
+			break;
+		}
+		case 3: {
+			for (int t = 1; t<nn; t++)
+				RK4 << <1, n >> >(yDev, t, tau);
+			break;
+		}
+		
 	}
 
 	cudaMemcpy(y, yDev, size, cudaMemcpyDeviceToHost);
@@ -62,9 +93,24 @@ double *RK4_CUDA(double t0, double tmax, double tau) {
 	}
 
 	cudaFree(yDev);
-	
+
 	fclose(f);
 	return y;
-	delete[] y;
+	delete y;
+
+
 }
 
+double *Eiler_CUDA(double t0, double tmax, double tau){
+	return Compute(t0, tmax, tau, 1);
+
+}
+
+double *RK2_CUDA(double t0, double tmax, double tau){
+	return Compute(t0, tmax, tau, 2);
+
+}
+
+double *RK4_CUDA(double t0, double tmax, double tau) {
+	return Compute(t0, tmax, tau, 3);
+}

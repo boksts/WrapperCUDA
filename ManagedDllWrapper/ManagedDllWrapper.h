@@ -13,10 +13,12 @@ namespace CppWrapper {
     public  ref class MathFuncsDiffEquations
     {
     public:
+		array<double> ^Eiler(double t0, double tmax, double tau);
+		array<double> ^RK2(double t0, double tmax, double tau);
 		array<double> ^RK4(double t0, double tmax, double tau);
-	
 
     private:
+		array<double> ^Diffur(double t0, double tmax, double tau, int method);
 	   MyCudaMathFuncs::DiffEquations *myCudaClass; // an instance of class in C++ for CUDA
     };
 

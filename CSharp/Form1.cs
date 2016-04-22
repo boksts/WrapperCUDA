@@ -22,6 +22,7 @@ namespace CSharp
       
         }
 
+        //диф.ур.
         private void button1_Click(object sender, EventArgs e)
         {
 
@@ -32,9 +33,32 @@ namespace CSharp
             double []mass={} ;
             double t = t0;
 
+           
             MathFuncsDiffEquations myfunc = new MathFuncsDiffEquations();
+
+            if (rbEiler.Checked) {
+                richTextBox1.Clear();
+                mass = myfunc.Eiler(t0, tmax, tau);
+                for (int i = 1; i < (int)((tmax - t0) / tau); i++) {
+                    t += tau;
+                    richTextBox1.Text += String.Format("time={0} y1={1:f6} y2={2:f6} y3={3:f6}", t, mass[i * 3], mass[1 + i * 3],
+                            mass[2 + i * 3]) + Environment.NewLine;
+                }
+            }
+
+            if (rbRK2.Checked) {
+                richTextBox1.Clear();
+                mass = myfunc.RK2(t0, tmax, tau);
+                for (int i = 1; i < (int)((tmax - t0) / tau); i++) {
+                    t += tau;
+                    richTextBox1.Text += String.Format("time={0} y1={1:f6} y2={2:f6} y3={3:f6}", t, mass[i * 3], mass[1 + i * 3],
+                            mass[2 + i * 3]) + Environment.NewLine;
+                }
+            }
+            
             if (rbRK4.Checked)
-            {
+            { 
+                richTextBox1.Clear();
                 mass = myfunc.RK4(t0, tmax, tau);
                 for (int i = 1; i < (int) ((tmax - t0)/tau); i++)
                 {
@@ -46,7 +70,7 @@ namespace CSharp
 
         }
 
-
+        //интегралы
        public double F(float x){
 	        return (x*x);
         }
@@ -62,6 +86,7 @@ namespace CSharp
                 tbResult.Text = myfunc.Simpson((float)a, (float)b, n, F).ToString();
         }
 
+        //матрицы
         private void btnMatrix_Click(object sender, EventArgs e)
         {
             int N = 4;

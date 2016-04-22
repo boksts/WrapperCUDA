@@ -30,6 +30,8 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -63,8 +65,6 @@
             this.rbEiler = new System.Windows.Forms.RadioButton();
             this.label1 = new System.Windows.Forms.Label();
             this.btnDiffEq = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -100,6 +100,26 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Матрицы";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(160, 54);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(186, 51);
+            this.button2.TabIndex = 10;
+            this.button2.Text = "Матрица на матрицу";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(271, 316);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(186, 51);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "Матрица на вектор";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // label12
             // 
@@ -401,7 +421,6 @@
             // rbRK2
             // 
             this.rbRK2.AutoSize = true;
-            this.rbRK2.Enabled = false;
             this.rbRK2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.rbRK2.Location = new System.Drawing.Point(18, 63);
             this.rbRK2.Name = "rbRK2";
@@ -414,7 +433,6 @@
             // rbEiler
             // 
             this.rbEiler.AutoSize = true;
-            this.rbEiler.Enabled = false;
             this.rbEiler.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.rbEiler.Location = new System.Drawing.Point(18, 28);
             this.rbEiler.Name = "rbEiler";
@@ -422,7 +440,7 @@
             this.rbEiler.TabIndex = 3;
             this.rbEiler.TabStop = true;
             this.rbEiler.Text = "Эйлера";
-            this.rbEiler.UseVisualStyleBackColor = true;
+            this.rbEiler.UseVisualStyleBackColor = false;
             // 
             // label1
             // 
@@ -444,26 +462,6 @@
             this.btnDiffEq.Text = "Решить";
             this.btnDiffEq.UseVisualStyleBackColor = true;
             this.btnDiffEq.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(271, 316);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(186, 51);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Матрица на вектор";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(160, 54);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(186, 51);
-            this.button2.TabIndex = 10;
-            this.button2.Text = "Матрица на матрицу";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form1
             // 

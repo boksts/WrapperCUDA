@@ -5,12 +5,11 @@
 #include <stdlib.h>
 #include <math.h>
 
- __device__ float func(float x){
-	return (x*x + 15);
-}
 
-typedef double(*FType)(float x);
+typedef  double(*FType)(float x);
 
+
+__device__  FType func;
 
 
 
@@ -32,9 +31,11 @@ __global__ void SimpsonMethod(float *sum_Dev, float *cut_Dev, float a, float b, 
 
 double Simpson_CUDA(float a, float b, int n, void *Function) {
 	float  result = 0;
-	
-FType F;
-	F = (FType)(Function);
+
+	FType F = (FType)(Function);
+	cudaMemcpyToSymbol(func, &F, sizeof(FType));
+
+
 
 	float h = (b - a) / n;
 	float *sum = new float[n];

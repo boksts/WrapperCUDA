@@ -6,9 +6,9 @@ using namespace std;
 class MyCudaMathFuncs{
 	public: class  DiffEquations{
 		public:
-			double _RK2();
+			double *_RK2(double t0, double tmax, double tau);
 			double *_RK4(double t0, double tmax, double tau);
-			double _Eiler();
+			double *_Eiler(double t0, double tmax, double tau);
 
 	};
 
