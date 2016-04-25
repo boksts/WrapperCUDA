@@ -25,4 +25,11 @@ class MyCudaMathFuncs{
 			double *_MultVector(double *a, double *b, int M, int N);
 	};
 
+	public: class Matrix_Seq{
+	public:
+		double *_Mult(double *a, double *b, int M, int N, int Q);
+		double *_Transp(double *a, int N, int M);
+		double *_MultVector(double *a, double *b, int M, int N);
+	};
+
 };

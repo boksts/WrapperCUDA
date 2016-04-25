@@ -14,8 +14,7 @@ __global__ void transpose(double* inputMatrix, double* outputMatrix, int width, 
 	int x = blockDim.x * blockIdx.x + threadIdx.x;
 	int y = blockDim.y * blockIdx.y + threadIdx.y;
 
-	for (int x = 0; x < width; x++)
-		for (int y = 0; y < height; y++)
+	if( x < width &&  y < height)
 			outputMatrix[x * height + y] = inputMatrix[y * width + x];
 }
 
@@ -54,13 +53,12 @@ double *Transp_CUDA(double *a, int N, int M){
 __global__ void matMult(double *a, double *b, int M, int N, int Q, double * c)
 {
 	int   i = blockDim.x * blockIdx.x + threadIdx.x;
+	int   j = blockDim.y * blockIdx.y + threadIdx.y;
 
-	if (i < M  ){
-		for (int j = 0; j < Q; j++) {
+	if (i < M && j < Q  ){
 			c[i*Q + j] = 0;
 			for (int k = 0; k < N; k++)
 				c[i*Q + j] += a[i*N + k] * b[k*Q + j];
-		}
 	}
 }
 
@@ -80,10 +78,11 @@ double *Mult_CUDA(double *a, double *b, int M, int N, int Q)
 
 	//определение размера грида
 	int gridSizeX = (M / BLOCK_SIZE) + ((M % BLOCK_SIZE) > 0 ? 1 : 0);
+	int gridSizeY = (Q / BLOCK_SIZE) + ((Q % BLOCK_SIZE) > 0 ? 1 : 0);
 
 	//определение числа блоков и потоков
-	dim3 threads(BLOCK_SIZE);
-	dim3 blocks(gridSizeX);
+	dim3 threads(BLOCK_SIZE, BLOCK_SIZE);
+	dim3 blocks(gridSizeX, gridSizeY);
 
 	cudaMemcpy(adev, a, sizeof(double) *M*N, cudaMemcpyHostToDevice);
 	cudaMemcpy(bdev, b, sizeof(double) *Q*N, cudaMemcpyHostToDevice);

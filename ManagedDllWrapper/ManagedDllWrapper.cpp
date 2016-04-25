@@ -86,7 +86,6 @@ array<double> ^CppWrapper::MathFuncsMatrix::MultVector(array<double> ^a, array<d
 	return managedArray;
 }
 
-
 array<double> ^CppWrapper::MathFuncsMatrix::Mult(array<double> ^a, array<double> ^b, int M,int N, int Q){
 	myCudaClass = new MyCudaMathFuncs::Matrix();
 	array<Double>^ managedArray = gcnew array<Double>(M*Q);
@@ -102,6 +101,64 @@ array<double> ^CppWrapper::MathFuncsMatrix::Mult(array<double> ^a, array<double>
 	}
 
 	_c=myCudaClass->_Mult(_a, _b, M,N,Q);
+	for (int i = 0; i < M*Q; i++)
+		managedArray[i] = _c[i];
+
+	return managedArray;
+}
+
+//матрицы последовательные
+array<double> ^CppWrapper::MathFuncsMatrixSeq::Transp(array<double> ^a, int N, int M){
+	myClass = new MyCudaMathFuncs::Matrix_Seq();
+	array<Double>^ managedArray = gcnew array<Double>(N*M);
+	double *_a, *_c;
+	_a = new double[N*M];
+	_c = new double[N*M];
+	for (int i = 0; i < N*M; i++){
+		_a[i] = a[i];
+	}
+	_c = myClass->_Transp(_a, N, M);
+	for (int i = 0; i < N*M; i++)
+		managedArray[i] = _c[i];
+
+	return managedArray;
+}
+
+array<double> ^CppWrapper::MathFuncsMatrixSeq::MultVector(array<double> ^a, array<double> ^b, int M, int N){
+	myClass = new MyCudaMathFuncs::Matrix_Seq();
+	array<Double>^ managedArray = gcnew array<Double>(M);
+	double *_a, *_b, *_c;
+	_a = new double[N*M];
+	_b = new double[N];
+	_c = new double[N];
+	for (int i = 0; i < M*N; i++){
+		_a[i] = a[i];
+	}
+	for (int i = 0; i < N; i++){
+		_b[i] = b[i];
+	}
+	_c = myClass->_MultVector(_a, _b, M, N);
+	for (int i = 0; i < M; i++)
+		managedArray[i] = _c[i];
+
+	return managedArray;
+}
+
+array<double> ^CppWrapper::MathFuncsMatrixSeq::Mult(array<double> ^a, array<double> ^b, int M, int N, int Q){
+	myClass = new MyCudaMathFuncs::Matrix_Seq();
+	array<Double>^ managedArray = gcnew array<Double>(M*Q);
+	double *_a, *_b, *_c;
+	_a = new double[M*N];
+	_b = new double[Q*N];
+	_c = new double[M*Q];
+	for (int i = 0; i < M*N; i++){
+		_a[i] = a[i];
+	}
+	for (int i = 0; i < Q*N; i++){
+		_b[i] = b[i];
+	}
+
+	_c = myClass->_Mult(_a, _b, M, N, Q);
 	for (int i = 0; i < M*Q; i++)
 		managedArray[i] = _c[i];
 

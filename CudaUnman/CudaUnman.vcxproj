@@ -162,7 +162,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CudaMathFuncs.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Sequential.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CudaMathFuncs.h" />

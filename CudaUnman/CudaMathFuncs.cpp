@@ -42,3 +42,20 @@ double *MyCudaMathFuncs::Matrix::_MultVector(double *a, double *b, int M, int N)
 {
 	return MultVector_CUDA(a, b, M, N);
 }
+
+
+//матрицы последовательные
+double *MyCudaMathFuncs::Matrix_Seq::_Mult(double *a, double *b, int M, int N, int Q)
+{
+	return Mult_Seq(a, b, M, N, Q);
+}
+
+double *MyCudaMathFuncs::Matrix_Seq::_Transp(double *a, int N, int M)
+{
+	return Transp_Seq(a, N, M);
+}
+
+double *MyCudaMathFuncs::Matrix_Seq::_MultVector(double *a, double *b, int M, int N)
+{
+	return MultVector_Seq(a, b, M, N);
+}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -90,8 +91,8 @@ namespace CSharp
         //транспонирование
         private void btnMatrix_Click(object sender, EventArgs e)
         {
-            int N = 4;
-            int M = 5;
+            int N = 400;
+            int M = 500;
             double[] a = new double[N*M];
             double[] c;
             for (int i = 0; i < N; i++)
@@ -103,6 +104,7 @@ namespace CSharp
             MathFuncsMatrix myfunc = new MathFuncsMatrix();
 
             c = myfunc.Transp(a, N, M);
+
 
             for (int i = 0; i < N; i++)
             {

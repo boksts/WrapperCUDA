@@ -1,11 +1,92 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CppWrapper;
 using CSharp;
 
 namespace UnitTestProject1 {
+
+    //тесты на производительность
     [TestClass]
-    public class UnitTest1 {
+    public class UnitTestPerformance {
+
+        //Умножение матриц
+         [TestMethod]
+        public void MatrixMult() {
+            MathFuncsMatrix mymatr1 = new MathFuncsMatrix();
+            MathFuncsMatrixSeq mymatr2 = new MathFuncsMatrixSeq();
+
+            int M = 1000;
+            int N = 2000;
+            int Q = 100;
+            var A = new double[M * N];
+            var B = new double[N * Q];
+
+            for (int i = 0; i < M; i++)
+                for (int j = 0; j < N; j++)
+                    A[i * N + j] = i + j;
+
+            for (int i = 0; i < N; i++)
+                for (int j = 0; j < Q; j++)
+                    B[i * Q + j] = j * 3.1;
+
+            Stopwatch sw1 = new Stopwatch();
+            sw1.Start();
+            mymatr1.Mult(A, B, M, N, Q);
+            sw1.Stop();
+            double secPar = sw1.ElapsedMilliseconds / 1000.0;
+
+
+            Stopwatch sw2 = new Stopwatch();
+            sw2.Start();
+            mymatr2.Mult(A, B, M, N, Q);
+            sw2.Stop();
+            double secSeq = sw2.ElapsedMilliseconds / 1000.0; 
+   
+            Assert.IsTrue(secPar<secSeq, "последовательный вариант быстрее!"); 
+
+        }
+
+         //Матрица на вектор
+         [TestMethod]
+         public void MatrixМVector() {
+             MathFuncsMatrix mymatr1 = new MathFuncsMatrix();
+             MathFuncsMatrixSeq mymatr2 = new MathFuncsMatrixSeq();
+             int N = 10000;
+             int M = 5000;
+             double[] a = new double[M * N];
+             double[] b = new double[N];
+             for (int i = 0; i < M; i++)
+                 for (int j = 0; j < N; j++)
+                     a[i * N + j] = i + j;
+
+             for (int j = 0; j < N; j++)
+                 b[j] = j;
+
+             Stopwatch sw1 = new Stopwatch();
+             sw1.Start();
+             mymatr1.MultVector(a, b, M, N); 
+             sw1.Stop();
+             double secPar = sw1.ElapsedMilliseconds / 1000.0;
+
+
+             Stopwatch sw2 = new Stopwatch();
+             sw2.Start();
+             mymatr2.MultVector(a, b, M, N); 
+             sw2.Stop();
+             double secSeq = sw2.ElapsedMilliseconds / 1000.0;
+
+             Assert.IsTrue(secPar < secSeq, "последовательный вариант быстрее!");
+
+         }
+
+
+       
+    }
+
+    //тесты на достоверность результатов
+     [TestClass]
+    public class UnitTestResults {
       
 
         //матрицы

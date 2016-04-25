@@ -48,4 +48,15 @@ namespace CppWrapper {
 		MyCudaMathFuncs::Matrix *myCudaClass; // an instance of class in C++ for CUDA
 	};
 
+	public ref class MathFuncsMatrixSeq
+	{
+	public:
+		array<double> ^Mult(array<double> ^a, array<double> ^b, int M, int N, int Q);
+		array<double> ^Transp(array<double> ^a, int N, int M);
+		array<double> ^MultVector(array<double> ^a, array<double> ^b, int M, int N);
+
+	private:
+		MyCudaMathFuncs::Matrix_Seq *myClass; // an instance of class in C++ for CUDA
+	};
+
 }
