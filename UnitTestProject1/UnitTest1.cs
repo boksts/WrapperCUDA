@@ -49,10 +49,10 @@ namespace UnitTestProject1 {
 
          //Матрица на вектор
          [TestMethod]
-         public void MatrixМVector() {
+         public void MatrixVector() {
              MathFuncsMatrix mymatr1 = new MathFuncsMatrix();
              MathFuncsMatrixSeq mymatr2 = new MathFuncsMatrixSeq();
-             int N = 10000;
+             int N = 1000;
              int M = 5000;
              double[] a = new double[M * N];
              double[] b = new double[N];
@@ -80,7 +80,35 @@ namespace UnitTestProject1 {
 
          }
 
+         //Транспонирование
+         [TestMethod]
+         public void MatrixTransp() {
+             MathFuncsMatrix mymatr1 = new MathFuncsMatrix();
+             MathFuncsMatrixSeq mymatr2 = new MathFuncsMatrixSeq();
+             int N = 1000;
+             int M = 500;
+             double[] a = new double[N * M];
+             for (int i = 0; i < N; i++)
+                 for (int j = 0; j < M; j++) {
+                     a[i * M + j] = i + j;
+                 }
 
+             Stopwatch sw1 = new Stopwatch();
+             sw1.Start();
+             mymatr1.Transp(a, N, M);
+             sw1.Stop();
+             double secPar = sw1.ElapsedMilliseconds / 1000.0;
+
+
+             Stopwatch sw2 = new Stopwatch();
+             sw2.Start();
+             mymatr2.Transp(a, N, M);
+             sw2.Stop();
+             double secSeq = sw2.ElapsedMilliseconds / 1000.0;
+
+             Assert.IsTrue(secPar < secSeq, "последовательный вариант быстрее!");
+
+         }
        
     }
 

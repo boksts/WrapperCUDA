@@ -139,6 +139,7 @@ namespace CSharp
             MathFuncsMatrix myfunc = new MathFuncsMatrix();
 
             c = myfunc.MultVector(a, b, M, N);
+
         }
 
 
