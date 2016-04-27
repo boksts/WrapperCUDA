@@ -22,8 +22,12 @@ double* MyCudaMathFuncs::DiffEquations::_RK4(double t0, double tmax, double tau)
 //интегралы
 double MyCudaMathFuncs::Integrals::_Simpson(float a, float b, int n, void* Function)
 {
-	
 	return Simpson_CUDA(a, b, n, Function);
+}
+
+double MyCudaMathFuncs::Integrals::_Simpson_3_8(float a, float b, int n, void* Function)
+{
+	return Simpson_3_8_CUDA(a, b, n, Function);
 }
 
 

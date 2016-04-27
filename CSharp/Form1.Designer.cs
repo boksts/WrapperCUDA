@@ -30,6 +30,7 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label13 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
@@ -65,7 +66,6 @@
             this.rbEiler = new System.Windows.Forms.RadioButton();
             this.label1 = new System.Windows.Forms.Label();
             this.btnDiffEq = new System.Windows.Forms.Button();
-            this.label13 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -102,6 +102,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Матрицы";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label13.Location = new System.Drawing.Point(6, 267);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(124, 25);
+            this.label13.TabIndex = 11;
+            this.label13.Text = "Умножение";
             // 
             // button2
             // 
@@ -284,7 +294,6 @@
             // rbSimpson38
             // 
             this.rbSimpson38.AutoSize = true;
-            this.rbSimpson38.Enabled = false;
             this.rbSimpson38.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.rbSimpson38.Location = new System.Drawing.Point(18, 63);
             this.rbSimpson38.Name = "rbSimpson38";
@@ -464,16 +473,6 @@
             this.btnDiffEq.Text = "Решить";
             this.btnDiffEq.UseVisualStyleBackColor = true;
             this.btnDiffEq.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label13.Location = new System.Drawing.Point(6, 267);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(124, 25);
-            this.label13.TabIndex = 11;
-            this.label13.Text = "Умножение";
             // 
             // Form1
             // 

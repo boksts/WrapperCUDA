@@ -32,6 +32,7 @@ namespace CppWrapper {
 		delegate double FDelegate(float);
 
 		double Simpson(float a, float b, int n, FDelegate ^ fdelegate);
+		double Simpson_3_8(float a, float b, int n, FDelegate ^ fdelegate);
 		
 	private:
 		MyCudaMathFuncs::Integrals *myCudaClass; // an instance of class in C++ for CUDA

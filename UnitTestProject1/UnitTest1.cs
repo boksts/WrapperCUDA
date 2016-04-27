@@ -42,7 +42,7 @@ namespace UnitTestProject1 {
             mymatr2.Mult(A, B, M, N, Q);
             sw2.Stop();
             double secSeq = sw2.ElapsedMilliseconds / 1000.0; 
-   
+
             Assert.IsTrue(secPar<secSeq, "последовательный вариант быстрее!"); 
 
         }
@@ -53,7 +53,7 @@ namespace UnitTestProject1 {
              MathFuncsMatrix mymatr1 = new MathFuncsMatrix();
              MathFuncsMatrixSeq mymatr2 = new MathFuncsMatrixSeq();
              int N = 1000;
-             int M = 5000;
+             int M = 500;
              double[] a = new double[M * N];
              double[] b = new double[N];
              for (int i = 0; i < M; i++)

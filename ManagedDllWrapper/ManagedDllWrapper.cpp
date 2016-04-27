@@ -47,6 +47,11 @@ double CppWrapper::MathFuncsIntegral::Simpson(float a, float b, int n, FDelegate
 	myCudaClass = new MyCudaMathFuncs::Integrals();
 	return myCudaClass->_Simpson(a, b, n, delegatePointer);
 }
+double CppWrapper::MathFuncsIntegral::Simpson_3_8(float a, float b, int n, FDelegate ^ fdelegate){
+	delegatePointer = (void*)Marshal::GetFunctionPointerForDelegate(fdelegate).ToPointer();
+	myCudaClass = new MyCudaMathFuncs::Integrals();
+	return myCudaClass->_Simpson_3_8(a, b, n, delegatePointer);
+}
 
 
 //матрицы

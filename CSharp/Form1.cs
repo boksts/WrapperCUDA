@@ -85,6 +85,8 @@ namespace CSharp
             MathFuncsIntegral myfunc = new MathFuncsIntegral();
             if (rbSimpson.Checked)
                 tbResult.Text = myfunc.Simpson((float)a, (float)b, n, F).ToString();
+            if (rbSimpson38.Checked)
+                tbResult.Text = myfunc.Simpson_3_8((float)a, (float)b, n, F).ToString();
         }
 
         //матрицы
