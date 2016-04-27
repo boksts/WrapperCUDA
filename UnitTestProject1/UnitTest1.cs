@@ -6,6 +6,7 @@ using CSharp;
 
 namespace UnitTestProject1 {
 
+    // добавил коммент в тесты!!!!!!!!!!!!!!!
     //тесты на производительность
     [TestClass]
     public class UnitTestPerformance {
