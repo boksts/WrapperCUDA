@@ -16,6 +16,7 @@ class MyCudaMathFuncs{
 		public:
 			double _Simpson(float a, float b, int n, void* Function);
 			double _Simpson_3_8(float a, float b, int n, void* Function);
+			double _Gauss(float a, float b, int n, void* Function, int point);
 	};
 
 	public: class Matrix{

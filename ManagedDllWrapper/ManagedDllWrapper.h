@@ -33,6 +33,7 @@ namespace CppWrapper {
 
 		double Simpson(float a, float b, int n, FDelegate ^ fdelegate);
 		double Simpson_3_8(float a, float b, int n, FDelegate ^ fdelegate);
+		double Gauss(float a, float b, int n, FDelegate ^ fdelegate, int point);
 		
 	private:
 		MyCudaMathFuncs::Integrals *myCudaClass; // an instance of class in C++ for CUDA

@@ -66,10 +66,13 @@
             this.rbEiler = new System.Windows.Forms.RadioButton();
             this.label1 = new System.Windows.Forms.Label();
             this.btnDiffEq = new System.Windows.Forms.Button();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label14 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -189,6 +192,8 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label14);
+            this.tabPage2.Controls.Add(this.numericUpDown1);
             this.tabPage2.Controls.Add(this.tbN);
             this.tabPage2.Controls.Add(this.tbB);
             this.tabPage2.Controls.Add(this.tbA);
@@ -212,32 +217,32 @@
             // 
             // tbN
             // 
-            this.tbN.Location = new System.Drawing.Point(308, 79);
+            this.tbN.Location = new System.Drawing.Point(404, 79);
             this.tbN.Name = "tbN";
             this.tbN.Size = new System.Drawing.Size(100, 26);
             this.tbN.TabIndex = 18;
-            this.tbN.Text = "100";
+            this.tbN.Text = "100000";
             // 
             // tbB
             // 
-            this.tbB.Location = new System.Drawing.Point(308, 47);
+            this.tbB.Location = new System.Drawing.Point(404, 47);
             this.tbB.Name = "tbB";
             this.tbB.Size = new System.Drawing.Size(100, 26);
             this.tbB.TabIndex = 17;
-            this.tbB.Text = "8";
+            this.tbB.Text = "10";
             // 
             // tbA
             // 
-            this.tbA.Location = new System.Drawing.Point(308, 15);
+            this.tbA.Location = new System.Drawing.Point(404, 15);
             this.tbA.Name = "tbA";
             this.tbA.Size = new System.Drawing.Size(100, 26);
             this.tbA.TabIndex = 16;
-            this.tbA.Text = "2";
+            this.tbA.Text = "0";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(277, 80);
+            this.label6.Location = new System.Drawing.Point(373, 80);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(21, 20);
             this.label6.TabIndex = 15;
@@ -246,7 +251,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(280, 47);
+            this.label5.Location = new System.Drawing.Point(376, 47);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(18, 20);
             this.label5.TabIndex = 14;
@@ -255,7 +260,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(280, 15);
+            this.label4.Location = new System.Drawing.Point(376, 15);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(18, 20);
             this.label4.TabIndex = 13;
@@ -263,7 +268,7 @@
             // 
             // tbResult
             // 
-            this.tbResult.Location = new System.Drawing.Point(175, 165);
+            this.tbResult.Location = new System.Drawing.Point(226, 227);
             this.tbResult.Name = "tbResult";
             this.tbResult.ReadOnly = true;
             this.tbResult.Size = new System.Drawing.Size(161, 26);
@@ -272,7 +277,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(72, 165);
+            this.label3.Location = new System.Drawing.Point(123, 230);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(97, 20);
             this.label3.TabIndex = 11;
@@ -281,9 +286,8 @@
             // rbGuassa
             // 
             this.rbGuassa.AutoSize = true;
-            this.rbGuassa.Enabled = false;
             this.rbGuassa.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.rbGuassa.Location = new System.Drawing.Point(18, 98);
+            this.rbGuassa.Location = new System.Drawing.Point(18, 126);
             this.rbGuassa.Name = "rbGuassa";
             this.rbGuassa.Size = new System.Drawing.Size(91, 28);
             this.rbGuassa.TabIndex = 10;
@@ -295,7 +299,7 @@
             // 
             this.rbSimpson38.AutoSize = true;
             this.rbSimpson38.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.rbSimpson38.Location = new System.Drawing.Point(18, 63);
+            this.rbSimpson38.Location = new System.Drawing.Point(18, 76);
             this.rbSimpson38.Name = "rbSimpson38";
             this.rbSimpson38.Size = new System.Drawing.Size(151, 28);
             this.rbSimpson38.TabIndex = 9;
@@ -328,7 +332,7 @@
             // btnIntegral
             // 
             this.btnIntegral.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnIntegral.Location = new System.Drawing.Point(146, 257);
+            this.btnIntegral.Location = new System.Drawing.Point(153, 306);
             this.btnIntegral.Name = "btnIntegral";
             this.btnIntegral.Size = new System.Drawing.Size(213, 62);
             this.btnIntegral.TabIndex = 6;
@@ -474,6 +478,38 @@
             this.btnDiffEq.UseVisualStyleBackColor = true;
             this.btnDiffEq.Click += new System.EventHandler(this.button1_Click);
             // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(107, 162);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 26);
+            this.numericUpDown1.TabIndex = 19;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(18, 164);
+            this.label14.Name = "label14";
+            this.label14.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.label14.Size = new System.Drawing.Size(83, 20);
+            this.label14.TabIndex = 20;
+            this.label14.Text = "Порядок";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -489,6 +525,7 @@
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -533,6 +570,8 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }
 
