@@ -93,8 +93,8 @@ namespace CSharp
         //транспонирование
         private void btnMatrix_Click(object sender, EventArgs e)
         {
-            int N = 400;
-            int M = 500;
+            int N = 4;
+            int M = 5;
             double[] a = new double[N*M];
             double[] c;
             for (int i = 0; i < N; i++)

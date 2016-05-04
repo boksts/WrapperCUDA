@@ -19,8 +19,8 @@ array<double> ^CppWrapper::MathFuncsDiffEquations::Diffur(double t0, double tmax
 	case 3: mass = myCudaClass->_RK4(t0, tmax, tau); break;
 
 	}
-	for (int i = 0; i < nn * 3; i++)
-		managedArray[i] = mass[i];
+
+	System::Runtime::InteropServices::Marshal::Copy((System::IntPtr)mass, managedArray, 0, nn * 3);
 	return managedArray;
 }
 
@@ -61,13 +61,11 @@ array<double> ^CppWrapper::MathFuncsMatrix::Transp(array<double> ^a,  int N, int
 	double *_a, *_c;
 	_a = new double[N*M];
 	_c = new double[N*M];
-	for (int i = 0; i < N*M; i++){
-		_a[i] = a[i];
-	}
-	_c = myCudaClass->_Transp(_a,  N, M);
-	for (int i = 0; i < N*M; i++)
-		managedArray[i] = _c[i];
 
+	System::Runtime::InteropServices::Marshal::Copy(a, 0, (System::IntPtr)_a, N*M);
+	_c = myCudaClass->_Transp(_a,  N, M);
+	
+	System::Runtime::InteropServices::Marshal::Copy((System::IntPtr)_c, managedArray, 0, N*M);
 	return managedArray;
 }
 
@@ -77,16 +75,12 @@ array<double> ^CppWrapper::MathFuncsMatrix::MultVector(array<double> ^a, array<d
 	double *_a, *_b, *_c;
 	_a = new double[N*M];
 	_b = new double[N];
-	_c = new double[N];
-	for (int i = 0; i < M*N; i++){
-		_a[i] = a[i];
-	}
-	for (int i = 0; i < N; i++){
-		_b[i] = b[i];
-	}
+	_c = new double[M];
+	System::Runtime::InteropServices::Marshal::Copy(a, 0, (System::IntPtr)_a, N*M);
+	System::Runtime::InteropServices::Marshal::Copy(b, 0, (System::IntPtr)_b, N);
+
 	_c = myCudaClass->_MultVector(_a, _b, M, N);
-	for (int i = 0; i < M; i++)
-		managedArray[i] = _c[i];
+	System::Runtime::InteropServices::Marshal::Copy((System::IntPtr)_c, managedArray, 0, M);
 
 	return managedArray;
 }
@@ -98,16 +92,11 @@ array<double> ^CppWrapper::MathFuncsMatrix::Mult(array<double> ^a, array<double>
 	_a = new double[M*N];
 	_b = new double[Q*N];
 	_c = new double[M*Q];
-	for (int i = 0; i < M*N; i++){
-		_a[i] = a[i];
-	}
-	for (int i = 0; i < Q*N; i++){
-		_b[i] = b[i];
-	}
+	System::Runtime::InteropServices::Marshal::Copy(a, 0, (System::IntPtr)_a, N*M);
+	System::Runtime::InteropServices::Marshal::Copy(b, 0, (System::IntPtr)_b, Q*N);
 
 	_c=myCudaClass->_Mult(_a, _b, M,N,Q);
-	for (int i = 0; i < M*Q; i++)
-		managedArray[i] = _c[i];
+	System::Runtime::InteropServices::Marshal::Copy((System::IntPtr)_c, managedArray, 0, M*Q);
 
 	return managedArray;
 }
@@ -119,13 +108,10 @@ array<double> ^CppWrapper::MathFuncsMatrixSeq::Transp(array<double> ^a, int N, i
 	double *_a, *_c;
 	_a = new double[N*M];
 	_c = new double[N*M];
-	for (int i = 0; i < N*M; i++){
-		_a[i] = a[i];
-	}
+	System::Runtime::InteropServices::Marshal::Copy(a, 0, (System::IntPtr)_a, N*M);
 	_c = myClass->_Transp(_a, N, M);
-	for (int i = 0; i < N*M; i++)
-		managedArray[i] = _c[i];
 
+	System::Runtime::InteropServices::Marshal::Copy((System::IntPtr)_c, managedArray, 0, N*M);
 	return managedArray;
 }
 
@@ -135,16 +121,12 @@ array<double> ^CppWrapper::MathFuncsMatrixSeq::MultVector(array<double> ^a, arra
 	double *_a, *_b, *_c;
 	_a = new double[N*M];
 	_b = new double[N];
-	_c = new double[N];
-	for (int i = 0; i < M*N; i++){
-		_a[i] = a[i];
-	}
-	for (int i = 0; i < N; i++){
-		_b[i] = b[i];
-	}
+	_c = new double[M];
+	System::Runtime::InteropServices::Marshal::Copy(a, 0, (System::IntPtr)_a, N*M);
+	System::Runtime::InteropServices::Marshal::Copy(b, 0, (System::IntPtr)_b, N);
+
 	_c = myClass->_MultVector(_a, _b, M, N);
-	for (int i = 0; i < M; i++)
-		managedArray[i] = _c[i];
+	System::Runtime::InteropServices::Marshal::Copy((System::IntPtr)_c, managedArray, 0, M);
 
 	return managedArray;
 }
@@ -156,16 +138,11 @@ array<double> ^CppWrapper::MathFuncsMatrixSeq::Mult(array<double> ^a, array<doub
 	_a = new double[M*N];
 	_b = new double[Q*N];
 	_c = new double[M*Q];
-	for (int i = 0; i < M*N; i++){
-		_a[i] = a[i];
-	}
-	for (int i = 0; i < Q*N; i++){
-		_b[i] = b[i];
-	}
+	System::Runtime::InteropServices::Marshal::Copy(a, 0, (System::IntPtr)_a, N*M);
+	System::Runtime::InteropServices::Marshal::Copy(b, 0, (System::IntPtr)_b, Q*N);
 
 	_c = myClass->_Mult(_a, _b, M, N, Q);
-	for (int i = 0; i < M*Q; i++)
-		managedArray[i] = _c[i];
+	System::Runtime::InteropServices::Marshal::Copy((System::IntPtr)_c, managedArray, 0, M*Q);
 
 	return managedArray;
 }
