@@ -52,6 +52,11 @@ double CppWrapper::MathFuncsIntegral::Simpson_3_8(float a, float b, int n, FDele
 	myCudaClass = new MyCudaMathFuncs::Integrals();
 	return myCudaClass->_Simpson_3_8(a, b, n, delegatePointer);
 }
+double CppWrapper::MathFuncsIntegral::Gauss(float a, float b, int n, FDelegate ^ fdelegate, int point){
+	delegatePointer = (void*)Marshal::GetFunctionPointerForDelegate(fdelegate).ToPointer();
+	myCudaClass = new MyCudaMathFuncs::Integrals();
+	return myCudaClass->_Gauss(a, b, n, delegatePointer, point);
+}
 
 
 //матрицы

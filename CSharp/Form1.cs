@@ -78,15 +78,18 @@ namespace CSharp
         private void button2_Click_1(object sender, EventArgs e)
         {
             double a, b;
-            int n;
+            int n, point;
             a = Convert.ToDouble(tbA.Text);
             b = Convert.ToDouble(tbB.Text);
             n = Convert.ToInt32(tbN.Text);
+            point = Convert.ToInt32(numericUpDown1.Value);
             MathFuncsIntegral myfunc = new MathFuncsIntegral();
             if (rbSimpson.Checked)
                 tbResult.Text = myfunc.Simpson((float)a, (float)b, n, F).ToString();
             if (rbSimpson38.Checked)
                 tbResult.Text = myfunc.Simpson_3_8((float)a, (float)b, n, F).ToString();
+            if (rbGuassa.Checked)
+                tbResult.Text = myfunc.Gauss((float)a, (float)b, n, F, point).ToString();                        
         }
 
         //матрицы

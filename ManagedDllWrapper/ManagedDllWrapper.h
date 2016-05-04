@@ -19,7 +19,7 @@ namespace CppWrapper {
 
     private:
 		array<double> ^Diffur(double t0, double tmax, double tau, int method);
-	   MyCudaMathFuncs::DiffEquations *myCudaClass; // an instance of class in C++ for CUDA
+	   MyCudaMathFuncs::DiffEquations *myCudaClass; 
     };
 
 	public ref class MathFuncsIntegral
@@ -33,9 +33,10 @@ namespace CppWrapper {
 
 		double Simpson(float a, float b, int n, FDelegate ^ fdelegate);
 		double Simpson_3_8(float a, float b, int n, FDelegate ^ fdelegate);
+		double Gauss(float a, float b, int n, FDelegate ^ fdelegate, int point);
 		
 	private:
-		MyCudaMathFuncs::Integrals *myCudaClass; // an instance of class in C++ for CUDA
+		MyCudaMathFuncs::Integrals *myCudaClass; 
 	};
 
 	public ref class MathFuncsMatrix
@@ -46,7 +47,7 @@ namespace CppWrapper {
 		array<double> ^MultVector(array<double> ^a, array<double> ^b, int M, int N);
 
 	private:
-		MyCudaMathFuncs::Matrix *myCudaClass; // an instance of class in C++ for CUDA
+		MyCudaMathFuncs::Matrix *myCudaClass; 
 	};
 
 	public ref class MathFuncsMatrixSeq

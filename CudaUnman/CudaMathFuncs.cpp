@@ -30,6 +30,11 @@ double MyCudaMathFuncs::Integrals::_Simpson_3_8(float a, float b, int n, void* F
 	return Simpson_3_8_CUDA(a, b, n, Function);
 }
 
+double MyCudaMathFuncs::Integrals::_Gauss(float a, float b, int n, void* Function, int point)
+{
+	return Gauss_CUDA(a, b, n, Function, point);
+}
+
 
 //матрицы
 double *MyCudaMathFuncs::Matrix::_Mult(double *a, double *b, int M, int N, int Q)
