@@ -17,12 +17,17 @@ __device__ double func(float x){
 }
 
 
-__global__ void SimpsonMethod_3_8(float *sum_Dev, float *cut_Dev, float a, float b, int n) {
+
+
+
+
+ __global__ void
+SimpsonMethod_3_8(float *sum_Dev, float *cut_Dev, float a, float b, int n) {
 
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
 
 	float h = (b - a) / n;
-
+	
 	if (i == 0)
 		sum_Dev[i] = ((3.0 / 8.0) * (func(a) + func(b)));
 	if (i == 1)
@@ -34,7 +39,9 @@ __global__ void SimpsonMethod_3_8(float *sum_Dev, float *cut_Dev, float a, float
 }
 
 
-__global__ void SimpsonMethod(float *sum_Dev, float *cut_Dev, float a, float b, int n) {
+__global__ void SimpsonMethod(float *sum_Dev, float *cut_Dev, float a, float b, int n/*, FType func*/) {
+
+	
 
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -54,6 +61,13 @@ __global__ void SimpsonMethod(float *sum_Dev, float *cut_Dev, float a, float b, 
 
 
 double Compute(float a, float b, int n, void *Function, int method){
+	FType F = (FType)(Function);
+	FType F_Dev;
+	//cudaMalloc((void**)&F_Dev, sizeof(FType));
+	//cudaMemcpyToSymbol(F_Dev, F, sizeof(FType));
+	///cudaMemcpy(F_Dev, F, sizeof(FType), cudaMemcpyHostToDevice);
+
+
 	float *sum = new float[n];
 	float *sum_Dev = NULL;
 	float *cut_Dev = NULL;
@@ -68,7 +82,7 @@ double Compute(float a, float b, int n, void *Function, int method){
 
 	switch (method){
 	case 1: {
-		SimpsonMethod <<<blocks, threads >>>(sum_Dev, cut_Dev, a, b, n);
+		SimpsonMethod << <blocks, threads >>>(sum_Dev, cut_Dev, a, b, n/*, F_Dev*/);
 		break;
 	}
 	case 2: {
@@ -83,10 +97,14 @@ double Compute(float a, float b, int n, void *Function, int method){
 	cudaThreadSynchronize();
 
 	cudaMemcpy(sum, sum_Dev, n*sizeof(float), cudaMemcpyDeviceToHost);
+	cudaFree(sum_Dev);
+	cudaFree(cut_Dev);
+
 
 	float result = 0;
 	for (int j = 0; j < n; j++)
 		result += sum[j];
+
 
 	switch (method){
 	case 1: {
@@ -99,6 +117,7 @@ double Compute(float a, float b, int n, void *Function, int method){
 		break;
 	}
 	}
+
 
 }
 

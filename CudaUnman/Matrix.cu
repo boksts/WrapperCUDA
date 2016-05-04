@@ -36,7 +36,7 @@ double *Transp_CUDA(double *a, int N, int M){
 	dim3 threads(BLOCK_SIZE, BLOCK_SIZE);
 	dim3 blocks(gridSizeX, gridSizeY);
 
-	transpose << <blocks, threads >> >(a_dev, a_t_dev, M, N);
+	transpose <<<blocks, threads >> >(a_dev, a_t_dev, M, N);
 	cudaThreadSynchronize();
 	
 	cudaMemcpy(a_t, a_t_dev, N*M * sizeof(double), cudaMemcpyDeviceToHost);
@@ -138,7 +138,7 @@ double *MultVector_CUDA(double *a, double *b, int M, int N)
 	cudaMemcpy(adev, a, sizeof(double) * N * M, cudaMemcpyHostToDevice);
 	cudaMemcpy(bdev, b, sizeof(double) * N, cudaMemcpyHostToDevice);
 
-	matMultVector << <blocks, threads >> >(adev, bdev, M, N, cdev);
+	matMultVector <<<blocks, threads >> >(adev, bdev, M, N, cdev);
 	cudaThreadSynchronize();
 
 	cudaMemcpy(c, cdev, sizeof(double)*M, cudaMemcpyDeviceToHost);
