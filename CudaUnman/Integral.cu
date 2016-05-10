@@ -9,30 +9,39 @@
 #define BLOCK_SIZE 64
 
 typedef  double(*FType)(float x);
-
+FType F;
 
 //__device__  FType func;
 __device__ double func(float x){
 	return (x*x);
 }
 
+__device__ class st {
+public: 	
+	FType f = F;
+	__host__ __device__  FType func=f;
+	
+};
 
 
- __global__ void
-SimpsonMethod_3_8(float *sum_Dev, float *cut_Dev, float a, float b, int n) {
+
+
+template<class FunctorType> 
+__global__ void
+SimpsonMethod_3_8(float *sum_Dev, float *cut_Dev, float a, float b, int n, FunctorType fn) {
 
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
 
 	float h = (b - a) / n;
-
+	
 	if (i == 0)
-		sum_Dev[i] = ((3.0 / 8.0) * (func(a) + func(b)));
+		sum_Dev[i] = ((3.0 / 8.0) * (fn.func(a) + fn.func(b)));
 	if (i == 1)
-		sum_Dev[i] = ((7.0 / 6.0) * (func(a + h) + func(b - h)));
+		sum_Dev[i] = ((7.0 / 6.0) * (fn.func(a + h) + fn.func(b - h)));
 	if (i == 3)
-		sum_Dev[i] = ((23.0 / 24.0) * (func(a + 2 * h) + func(b - 2 * h)));
+		sum_Dev[i] = ((23.0 / 24.0) * (fn.func(a + 2 * h) + fn.func(b - 2 * h)));
 	if (i > 3)
-		sum_Dev[i] = func(a + (i - 1)*h);
+		sum_Dev[i] = fn.func(a + (i - 1)*h);
 }
 
 
@@ -67,8 +76,13 @@ __global__ void GaussMethod(float *sum_Dev, float *xm_Dev, float *cm_Dev, float 
 }
 
 double Compute(float a, float b, int n, void *Function, int method){
-	FType F = (FType)(Function);
+	F = (FType)(Function);
+
+	st s;
+	s.func(5);
+	//s.ff = F;
 	FType F_Dev;
+
 	//cudaMalloc((void**)&F_Dev, sizeof(FType));
 	//cudaMemcpyToSymbol(F_Dev, F, sizeof(FType));
 	///cudaMemcpy(F_Dev, F, sizeof(FType), cudaMemcpyHostToDevice);
@@ -92,7 +106,7 @@ double Compute(float a, float b, int n, void *Function, int method){
 		break;
 	}
 	case 2: {
-		SimpsonMethod_3_8 << <blocks, threads >> >(sum_Dev, cut_Dev, a, b, n);
+		SimpsonMethod_3_8 << <blocks, threads >> >(sum_Dev, cut_Dev, a, b, n,s);
 		break;
 	}
 	}
@@ -117,7 +131,7 @@ double Compute(float a, float b, int n, void *Function, int method){
 		return (h / 3)*result;
 	}
 	case 2: {
-		return h*result;
+		return s.func(5);
 	}
 	}
 }
