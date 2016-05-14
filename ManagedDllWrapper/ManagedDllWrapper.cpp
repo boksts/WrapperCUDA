@@ -6,42 +6,50 @@
 #include "..\CudaUnman\CudaMathFuncs.h"
 #include "..\CudaUnman\CudaMathFuncs.cpp"
 
-//диф. ур.
 
-array<double> ^CppWrapper::MathFuncsDiffEquations::Diffur(double t0, double tmax, double tau,int method){
-	myCudaClass = new  MyCudaMathFuncs::DiffEquations();
+//дифференциальные уравнения
+
+array<double> ^CppWrapper::MathFuncsDiffEquations::Diffur(double t0, double tmax, double tau, int n, array<double> ^ynach, FDelegate ^ fdelegate, int method){
+	delegatePointer = (void*)Marshal::GetFunctionPointerForDelegate(fdelegate).ToPointer();
+	myCudaClass = new MyCudaMathFuncs::DiffEquations();
 	int nn = (int)((tmax - t0) / tau);
-	array<Double>^ managedArray = gcnew array<Double>(nn * 3);
+	array<Double>^ managedArray = gcnew array<Double>(nn * n);
 	double *mass;
+
+	double *_ynach=new double[n];
+	System::Runtime::InteropServices::Marshal::Copy(ynach, 0, (System::IntPtr)_ynach, n);
+
 	switch (method){
-	case 1: mass = myCudaClass->_Eiler(t0, tmax, tau); break;
-	case 2: mass = myCudaClass->_RK2(t0, tmax, tau); break;
-	case 3: mass = myCudaClass->_RK4(t0, tmax, tau); break;
+		case 1: mass = myCudaClass->_Eiler(t0, tmax, tau,n,_ynach, delegatePointer); break;
+		case 2: mass = myCudaClass->_RK2(t0, tmax, tau, n, _ynach, delegatePointer); break;
+		case 3: mass = myCudaClass->_RK4(t0, tmax, tau, n, _ynach, delegatePointer); break;
 
-	}
-
-	System::Runtime::InteropServices::Marshal::Copy((System::IntPtr)mass, managedArray, 0, nn * 3);
-	return managedArray;
 }
 
-array<double> ^CppWrapper::MathFuncsDiffEquations::Eiler(double t0, double tmax, double tau)
+System::Runtime::InteropServices::Marshal::Copy((System::IntPtr)mass, managedArray, 0, nn * n);
+return managedArray;
+}
+
+
+array<double> ^CppWrapper::MathFuncsDiffEquations::Eiler(double t0, double tmax, double tau, int n, array<double> ^ynach, FDelegate ^ fdelegate)
 {
-	return Diffur(t0, tmax, tau, 1);
+	return Diffur(t0, tmax, tau, n, ynach, fdelegate, 1);
 }
 
-array<double> ^CppWrapper::MathFuncsDiffEquations::RK2(double t0, double tmax, double tau)
+array<double> ^CppWrapper::MathFuncsDiffEquations::RK2(double t0, double tmax, double tau, int n, array<double> ^ynach, FDelegate ^ fdelegate)
 {
-	return Diffur(t0, tmax, tau, 2);
+	return Diffur(t0, tmax, tau, n, ynach, fdelegate, 2);
 }
 
-array<double> ^CppWrapper::MathFuncsDiffEquations::RK4(double t0, double tmax, double tau)
-{   
-	return Diffur(t0, tmax, tau, 3);
+array<double> ^CppWrapper::MathFuncsDiffEquations::RK4(double t0, double tmax, double tau, int n, array<double> ^ynach, FDelegate ^ fdelegate)
+{
+	return Diffur(t0, tmax, tau, n, ynach, fdelegate, 3);
 }
 
 
 
 //интегралы
+
 double CppWrapper::MathFuncsIntegral::Simpson(float a, float b, int n, FDelegate ^ fdelegate){
 	delegatePointer = (void*)Marshal::GetFunctionPointerForDelegate(fdelegate).ToPointer();
 	myCudaClass = new MyCudaMathFuncs::Integrals();
@@ -60,7 +68,8 @@ double CppWrapper::MathFuncsIntegral::Gauss(float a, float b, int n, FDelegate ^
 
 
 //матрицы
-array<double> ^CppWrapper::MathFuncsMatrix::Transp(array<double> ^a,  int N, int M){
+
+array<double> ^CppWrapper::MathFuncsMatrix::Transp(array<double> ^a, int N, int M){
 	myCudaClass = new MyCudaMathFuncs::Matrix();
 	array<Double>^ managedArray = gcnew array<Double>(N*M);
 	double *_a, *_c;
@@ -68,8 +77,8 @@ array<double> ^CppWrapper::MathFuncsMatrix::Transp(array<double> ^a,  int N, int
 	_c = new double[N*M];
 
 	System::Runtime::InteropServices::Marshal::Copy(a, 0, (System::IntPtr)_a, N*M);
-	_c = myCudaClass->_Transp(_a,  N, M);
-	
+	_c = myCudaClass->_Transp(_a, N, M);
+
 	System::Runtime::InteropServices::Marshal::Copy((System::IntPtr)_c, managedArray, 0, N*M);
 	return managedArray;
 }
@@ -107,6 +116,7 @@ array<double> ^CppWrapper::MathFuncsMatrix::Mult(array<double> ^a, array<double>
 }
 
 //матрицы последовательные
+
 array<double> ^CppWrapper::MathFuncsMatrixSeq::Transp(array<double> ^a, int N, int M){
 	myClass = new MyCudaMathFuncs::Matrix_Seq();
 	array<Double>^ managedArray = gcnew array<Double>(N*M);

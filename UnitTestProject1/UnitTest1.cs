@@ -6,7 +6,6 @@ using CSharp;
 
 namespace UnitTestProject1 {
 
-    // добавил коммент в тесты!!!!!!!!!!!!!!!
     //тесты на производительность
     [TestClass]
     public class UnitTestPerformance {
@@ -120,6 +119,7 @@ namespace UnitTestProject1 {
 
         //матрицы
         MathFuncsMatrix mymatr = new MathFuncsMatrix();
+
         //транспонирование
         [TestMethod]
         public void MatrixTransp() {
@@ -183,19 +183,36 @@ namespace UnitTestProject1 {
 
         //дифф. уравнения
          MathFuncsDiffEquations mydiff = new MathFuncsDiffEquations();
+         public double diffEqu(int i, double y1, double y2, double y3) {
+             switch (i) {
+                 case 0:
+                     return -(55 + y3) * y1 + 65 * y2;
+                 case 1:
+                     return 0.0785 * (y1 - y2);
+                 case 2:
+                     return 0.1 * y1;
+             }
+             return 0;
+         }
 
          //Эйлер
          [TestMethod]
          public void DiffEiler() {
              double[] mass = { };
              double t0 = 0.0, tmax = 0.1, tau = 0.01;
-             mass = mydiff.Eiler(t0, tmax, tau);
 
-             int n = (int)((tmax - t0) / tau) - 1;
+             int n = 3;
 
-             Assert.AreEqual(Math.Round(mass[n * 3], 6), 1.182412);
-             Assert.AreEqual(Math.Round(mass[n * 3 + 1], 6), 1.001024);
-             Assert.AreEqual(Math.Round(mass[n * 3 + 2], 6), 0.010308);
+             double[] ynach = new double[n];
+             ynach[0] = 1.0;
+             ynach[1] = 1.0;
+             ynach[2] = 0.0;
+             mass = mydiff.Eiler(t0, tmax, tau, n, ynach, diffEqu);
+             int nn = (int)((tmax - t0) / tau) - 1;
+
+             Assert.AreEqual(Math.Round(mass[nn * n], 6), 1.182412);
+             Assert.AreEqual(Math.Round(mass[nn * n + 1], 6), 1.001024);
+             Assert.AreEqual(Math.Round(mass[nn * n + 2], 6), 0.010308);
          }
 
 
@@ -204,13 +221,18 @@ namespace UnitTestProject1 {
         public void DiffRK2() {
              double[] mass = { };
              double t0 = 0.0, tmax = 0.1, tau = 0.01;
-             mass = mydiff.RK2(t0,tmax,tau);
+             int n = 3;
 
-             int n = (int)((tmax - t0) / tau)-1;
+             double[] ynach = new double[n];
+             ynach[0] = 1.0;
+             ynach[1] = 1.0;
+             ynach[2] = 0.0;
+             mass = mydiff.RK2(t0, tmax, tau, n, ynach, diffEqu);
+             int nn = (int)((tmax - t0) / tau)-1;
 
-             Assert.AreEqual(Math.Round(mass[n*3],6),1.180697);
-           Assert.AreEqual(Math.Round(mass[n*3+1],6), 1.001026);
-             Assert.AreEqual(Math.Round(mass[n*3+2],6), 0.010311);
+             Assert.AreEqual(Math.Round(mass[nn*n], 6), 1.180697);
+             Assert.AreEqual(Math.Round(mass[nn*n + 1], 6), 1.001026);
+             Assert.AreEqual(Math.Round(mass[nn*n + 2], 6), 0.010311);
          }
 
          //РК-4
@@ -218,12 +240,18 @@ namespace UnitTestProject1 {
          public void DiffRK4() {
              double[] mass = { };
              double t0 = 0.0, tmax = 0.1, tau = 0.01;
-             mass = mydiff.RK4(t0, tmax, tau);
+             int n = 3;
 
-             int n = (int)((tmax - t0) / tau) - 1;
-             Assert.AreEqual(Math.Round(mass[n * 3], 6), 1.181266);
-             Assert.AreEqual(Math.Round(mass[n * 3 + 1], 6), 1.001026);
-             Assert.AreEqual(Math.Round(mass[n * 3 + 2], 6), 0.010310);
+             double[] ynach = new double[n];
+             ynach[0] = 1.0;
+             ynach[1] = 1.0;
+             ynach[2] = 0.0;
+             mass = mydiff.RK4(t0, tmax, tau,n,ynach,diffEqu);
+
+             int nn = (int)((tmax - t0) / tau) - 1;
+             Assert.AreEqual(Math.Round(mass[nn * n], 6), 1.181266);
+             Assert.AreEqual(Math.Round(mass[nn * n + 1], 6), 1.001026);
+             Assert.AreEqual(Math.Round(mass[nn * n + 2], 6), 0.010310);
          }
 
     }
