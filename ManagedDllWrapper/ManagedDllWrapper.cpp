@@ -115,7 +115,7 @@ array<double> ^CppWrapper::MathFuncsMatrix::Mult(array<double> ^a, array<double>
 	return managedArray;
 }
 
-//матрицы последовательные
+///матрицы последовательные
 
 array<double> ^CppWrapper::MathFuncsMatrixSeq::Transp(array<double> ^a, int N, int M){
 	myClass = new MyCudaMathFuncs::Matrix_Seq();
