@@ -11,6 +11,7 @@ namespace UnitTestProject1 {
     public class UnitTestPerformance {
 
         //Умножение матриц
+        //Добавлен комментарий
          [TestMethod]
         public void MatrixMult() {
             MathFuncsMatrix mymatr1 = new MathFuncsMatrix();
