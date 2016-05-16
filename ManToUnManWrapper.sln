@@ -14,9 +14,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp", "CSharp\CSharp.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{98A4DDA4-B798-4125-B5EE-0AA1D35CAB9F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CUDA_unman_dll", "..\..\CUDA_unman_dll\CUDA_unman_dll\CUDA_unman_dll.vcxproj", "{180F6D4D-DCDD-4933-9C9F-29AC874E8309}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CUDA_unman_dll", "CUDA_unman_dll\CUDA_unman_dll\CUDA_unman_dll.vcxproj", "{180F6D4D-DCDD-4933-9C9F-29AC874E8309}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Unman_C_dll_test", "..\..\Unman_C_dll_test\Unman_C_dll_test\Unman_C_dll_test.vcxproj", "{9BD622FB-58A6-4528-BF3D-C917CED1FC3A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Unman_C_dll_test", "Unman_C_dll_test\Unman_C_dll_test\Unman_C_dll_test.vcxproj", "{9BD622FB-58A6-4528-BF3D-C917CED1FC3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
