@@ -24,7 +24,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v120</PlatformToolset>
@@ -165,6 +165,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="Sequential.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\CUDA_unman_dll\CUDA_unman_dll\MiniHeaderForCuda.h" />
     <ClInclude Include="CudaMathFuncs.h" />
     <ClInclude Include="MiniWrapForCuda.h" />
   </ItemGroup>
