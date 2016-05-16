@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-using CppWrapper;
+using MathLibCUDA;
 
 namespace CSharp {
     public partial class Form1 : Form {
@@ -18,8 +18,9 @@ namespace CSharp {
             InitializeComponent();
         }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //диф.ур.
-
         public double diffEqu(int i, double y1, double y2, double y3) {
             switch (i) {
                 case 0:
@@ -31,7 +32,6 @@ namespace CSharp {
             }
             return 0;
         }
-
 
         private void button1_Click(object sender, EventArgs e) {
             double t0, tmax, tau;
@@ -52,6 +52,7 @@ namespace CSharp {
             if (rbEiler.Checked) {
                 richTextBox1.Clear();
                 mass = myfunc.Eiler(t0, tmax, tau, n, ynach, diffEqu);
+                
 
                 for (int i = 1; i < (int) ((tmax - t0)/tau); i++) {
                     t += tau;
@@ -60,7 +61,7 @@ namespace CSharp {
                         mass[2 + i*3]) + Environment.NewLine;
                 }
             }
-
+           
             if (rbRK2.Checked) {
                 richTextBox1.Clear();
                 mass = myfunc.RK2(t0, tmax, tau, n, ynach, diffEqu);
@@ -74,6 +75,7 @@ namespace CSharp {
 
             if (rbRK4.Checked) {
                 richTextBox1.Clear();
+            
                 mass = myfunc.RK4(t0, tmax, tau, n, ynach, diffEqu);
                 for (int i = 1; i < (int) ((tmax - t0)/tau); i++) {
                     t += tau;
@@ -83,7 +85,9 @@ namespace CSharp {
                 }
             }
         }
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       
         //интегралы
 
         //подыинтегральная функция для передачи в качестве параметра
@@ -100,15 +104,19 @@ namespace CSharp {
             n = Convert.ToInt32(tbN.Text);
             point = Convert.ToInt32(numericUpDown1.Value);
             MathFuncsIntegral myfunc = new MathFuncsIntegral();
+            
             if (rbSimpson.Checked)
-                tbResult.Text = myfunc.Simpson((float) a, (float) b, n, F).ToString();
+                tbResult.Text = myfunc.Simpson((float) a, (float) b, n,F).ToString();
             if (rbSimpson38.Checked)
                 tbResult.Text = myfunc.Simpson_3_8((float) a, (float) b, n, F).ToString();
             if (rbGuassa.Checked)
                 tbResult.Text = myfunc.Gauss((float) a, (float) b, n, F, point).ToString();
         }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //матрицы
+
         //транспонирование
         private void btnMatrix_Click(object sender, EventArgs e) {
             int N = 4;
@@ -119,11 +127,10 @@ namespace CSharp {
                 for (int j = 0; j < M; j++) {
                     a[i*M + j] = i + j;
                 }
-
+            
             MathFuncsMatrix myfunc = new MathFuncsMatrix();
 
             c = myfunc.Transp(a, N, M);
-
 
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < M; j++)

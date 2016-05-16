@@ -16,7 +16,7 @@ __global__ void transpose(double* inputMatrix, double* outputMatrix, int width, 
 }
 
 //тансопнирование матрицы 
-//a[M][N] - исходная матрица
+//a[N][M] - исходная матрица
 double* Transp_CUDA(double* a, int N, int M) {
 
 	double* a_t = new double[N * M];

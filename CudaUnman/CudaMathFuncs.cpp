@@ -11,13 +11,13 @@ double* MyCudaMathFuncs::DiffEquations::_Eiler(double t0, double tmax, double ta
 	return Eiler_CUDA(t0, tmax, tau,n,ynach, Function);
 }
 
-//метод Рунге-Кутта 2
+//метод Рунге-Кутты 2
 double* MyCudaMathFuncs::DiffEquations::_RK2(double t0, double tmax, double tau, int n, double *ynach, void* Function)
 {
 	return RK2_CUDA(t0, tmax, tau, n, ynach, Function);
 }
 
-//метод Рунге-Кутта 4
+//метод Рунге-Кутты 4
 double* MyCudaMathFuncs::DiffEquations::_RK4(double t0, double tmax, double tau, int n, double *ynach, void* Function)
 {
 	return RK4_CUDA(t0, tmax, tau, n, ynach, Function);

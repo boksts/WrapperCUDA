@@ -9,16 +9,16 @@ using namespace System;
 using namespace System::Runtime::InteropServices;
 
 
-namespace CppWrapper {
+namespace MathLibCUDA {
 
 	/// <summary>
 	/// Предоставляет возможность решать систему дифференциальных уравнений тремя методами</summary>	
 	public ref class MathFuncsDiffEquations
 	{
-		Delegate^ F;
 		void* delegatePointer;
 	
 		public:
+		//для передачи функции содержащей диф. уравнения
 		[UnmanagedFunctionPointerAttribute(CallingConvention::Cdecl)]
 		delegate double FDelegate(int, double, double, double);
 
@@ -47,7 +47,7 @@ namespace CppWrapper {
 		array<double> ^Eiler(double t0, double tmax, double tau, int n, array<double> ^ynach, FDelegate ^fdelegate);
 		
 		/// <summary>
-		/// Метод Рунге-Кутта 2
+		/// Метод Рунге-Кутты 2
 		/// </summary>
 		/// <param name="t0"> начальное время</param> 	
 		///<param name="tmax"> конечное время</param> 
@@ -72,7 +72,7 @@ namespace CppWrapper {
 		array<double> ^RK2(double t0, double tmax, double tau, int n, array<double> ^ynach, FDelegate ^fdelegate);
 
 		/// <summary>
-		/// Метод Рунге-Кутта 4
+		/// Метод Рунге-Кутты 4
 		/// </summary>
 		/// <param name="t0"> начальное время</param> 	
 		///<param name="tmax"> конечное время</param> 
@@ -97,6 +97,7 @@ namespace CppWrapper {
 		array<double> ^RK4(double t0, double tmax, double tau, int n, array<double> ^ynach, FDelegate ^fdelegate);
 
 		private:
+		//обобщенный метод для передачи данных из управляемого кода
 		array<double> ^Diffur(double t0, double tmax, double tau, int n, array<double> ^ynach, FDelegate ^ fdelegate, int method);
 		MyCudaMathFuncs::DiffEquations *myCudaClass;
 	};
@@ -106,10 +107,10 @@ namespace CppWrapper {
 	/// Предоставляет возможность находить интеграл тремя методами</summary>	
 	public ref class MathFuncsIntegral
 	{
-		Delegate^ F;
 		void* delegatePointer;
 	
 		public:
+		//для передачи подынтегральной функции
 		[UnmanagedFunctionPointerAttribute(CallingConvention::Cdecl)]
 		delegate double FDelegate(float);
 
@@ -149,14 +150,14 @@ namespace CppWrapper {
 		/// <param name="a"> интервал от</param> 	
 		/// <param name="b"> интервал до</param> 
 		/// <param name="n"> число разбиений</param>
-		/// <param name="fdelegate"> подынтегральная функция</param>
-		/// <param name="point"> число точек в методе
+		/// <param name="fdelegate"> подынтегральная функция
 		///<code> 
 		///Пример функции:
 		///public double F(float x) {
 		///  	return (x*x);
 		///}
 		///</code></param>
+		/// <param name="point"> число точек в методе</param>
 		double Gauss(float a, float b, int n, FDelegate ^ fdelegate, int point);
 
 		private:

@@ -1,8 +1,7 @@
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 #include "MiniWrapForCuda.h"
-#include <stdio.h>
-#include <stdlib.h>
+
 
 
 //прототип функции с диф.ур., которая передается из C#
@@ -42,6 +41,10 @@ __global__ void Eiler(int n, double* y, int t, double tau) {
 __global__ void RK2(int n, double* y, double* r, int t, double tau) {
 	int idx = threadIdx.x;
 	int i = (t - 1) * n;
+
+	/*r[idx] = y[i + idx] + tau/2* func(idx, y[i], y[i + 1], y[i + 2]);
+	y[i + n + idx] = y[i + idx] + tau * func(idx, r[0], r[1], r[2]);*/
+
 	//расчет 1 коэффициента
 	r[idx] = tau * func(idx, y[i], y[i + 1], y[i + 2]);
 	//расчет 2 коэффициента
@@ -125,14 +128,14 @@ double* Eiler_CUDA(double t0, double tmax, double tau, int n, double* ynach, voi
 
 }
 
-//метод Рунге-Кутта 2
+//метод Рунге-Кутты 2
 //t0 - время начальное, tmax - время конечное, tau - шаг, n - число уравнений, *ynach - массив начальных значений, *Function - диф.ур.
 double* RK2_CUDA(double t0, double tmax, double tau, int n, double* ynach, void* Function) {
 	return Compute(t0, tmax, tau, n, ynach, Function, 2);
 
 }
 
-//метод Рунге-Кутта 4
+//метод Рунге-Кутты 4
 //t0 - время начальное, tmax - время конечное, tau - шаг, n - число уравнений, *ynach - массив начальных значений, *Function - диф.ур.
 double* RK4_CUDA(double t0, double tmax, double tau, int n, double* ynach, void* Function) {
 	return Compute(t0, tmax, tau, n, ynach, Function, 3);
