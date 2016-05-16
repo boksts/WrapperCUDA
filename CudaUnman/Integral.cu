@@ -4,7 +4,7 @@
 
 #define BLOCK_SIZE 64
 
-//тип функции
+//прототип функции с подынтегральной функцией, которая передается из C#
 //typedef  double(*FType)(float x);
 
 //подынтегральная функция
@@ -21,12 +21,16 @@ __global__ void SimpsonMethod_3_8(float* sum_Dev, float* cut_Dev, float a, float
 	float h = (b - a) / n;
 
 	if (i == 0)
+		//расчет значений на границах
 		sum_Dev[i] = ((3.0 / 8.0) * (func(a) + func(b)));
 	if (i == 1)
+		//расчет смещенных значений на границах
 		sum_Dev[i] = ((7.0 / 6.0) * (func(a + h) + func(b - h)));
 	if (i == 3)
+		//расчет смещенных значений на границах
 		sum_Dev[i] = ((23.0 / 24.0) * (func(a + 2 * h) + func(b - 2 * h)));
 	if (i > 3)
+		//расчет внутренних значений
 		sum_Dev[i] = func(a + (i - 1) * h);
 }
 
@@ -37,15 +41,20 @@ __global__ void SimpsonMethod(float* sum_Dev, float* cut_Dev, float a, float b, 
 
 	float h = (b - a) / n;
 
+	//расчет массива разбиений
 	cut_Dev[i] = h * i;
 
 	if (i != 0 && i % 2 == 0 && i != n - 1)
+		//расчет четных внутренних значений
 		sum_Dev[i] = 4 * func(a + cut_Dev[i]);
 	if (i != 0 && i % 2 == 1 && i != n - 1)
+		//расчет нечетных внутренних значений
 		sum_Dev[i] = 2 * func(a + cut_Dev[i]);
 	if (i == 0)
+		//расчет значения левой границы
 		sum_Dev[i] = func(a);
 	if (i == n - 1)
+		//расчет значения правой границы
 		sum_Dev[i] = func(b);
 }
 
@@ -57,6 +66,7 @@ __global__ void GaussMethod(float* sum_Dev, float* xm_Dev, float* cm_Dev, float 
 	float h = (b - a) / n;
 
 	for (int i = 0; i < point; i++)
+		//расчет значения интеграла по числу точек
 		sum_Dev[j] += cm_Dev[i] * func(xm_Dev[i] * (h / 2) + a + j * h + h / 2);
 }
 
@@ -98,7 +108,7 @@ double Compute(float a, float b, int n, void* Function, int method) {
 	cudaFree(sum_Dev);
 	cudaFree(cut_Dev);
 
-
+	//выполнение редукции результатов, полученных с device
 	float result = 0;
 	for (int j = 0; j < n; j++)
 		result += sum[j];
@@ -119,7 +129,7 @@ double Compute(float a, float b, int n, void* Function, int method) {
 	}
 }
 
-//функция выделения памяти и вызова ядра для метода Гауса
+//перегруженная функция выделения памяти и вызова ядра для метода Гауса
 double Compute(float a, float b, int n, void* Function, int method, int point) {
 	float h = (b - a) / n;
 	float* sum = new float[n];
@@ -130,6 +140,7 @@ double Compute(float a, float b, int n, void* Function, int method, int point) {
 	float* xm = new float[point];
 	float* cm = new float[point];
 
+	//выбор значений коэффициентов для расчета (в зависимости от выбранного количества точек)
 	switch (point) {
 	case 2:
 		xm[0] = -0.5773503;
@@ -172,6 +183,7 @@ double Compute(float a, float b, int n, void* Function, int method, int point) {
 
 	cudaMemcpy(sum, sum_Dev, n * sizeof(float), cudaMemcpyDeviceToHost);
 
+	//выполнение редукции результатов, полученных с device
 	float result = 0;
 	for (int j = 0; j < n; j++)
 		result += sum[j];
