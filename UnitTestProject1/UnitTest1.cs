@@ -254,5 +254,47 @@ namespace UnitTestProject1 {
              Assert.AreEqual(Math.Round(mass[nn * n + 2], 6), 0.010310);
          }
 
+         //интегралы
+         MathFuncsIntegral integr = new MathFuncsIntegral();
+
+         public double integrFunc(float x)
+         {
+             return x*x;
+         }
+
+         //Симпсон
+         [TestMethod]
+         public void integrSimpson()
+         {
+             Assert.AreEqual(Math.Round(integr.Simpson(0, 10, 100000, integrFunc), 6), 333.323242);
+         }
+
+         //Симпсон_3_8
+         [TestMethod]
+         public void integrSimpson_3_8()
+         {
+             Assert.AreEqual(Math.Round(integr.Simpson_3_8(0, 10, 100000, integrFunc), 6), 333.343445);
+         }
+
+         //Гаусс 2 точки
+         [TestMethod]
+         public void Gauss2()
+         {
+             Assert.AreEqual(Math.Round(integr.Gauss(0, 10, 100000, integrFunc, 2), 6), 333.330688);
+         }
+
+         //Гаусс 3 точки
+         [TestMethod]
+         public void Gauss3()
+         {
+             Assert.AreEqual(Math.Round(integr.Gauss(0, 10, 100000, integrFunc, 3), 6), 333.333313);
+         }
+
+         //Гаусс 4 точки
+         [TestMethod]
+         public void Gauss4()
+         {
+             Assert.AreEqual(Math.Round(integr.Gauss(0, 10, 100000, integrFunc, 4), 6), 333.333282);
+         }
     }
 }
