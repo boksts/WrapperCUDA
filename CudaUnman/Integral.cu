@@ -51,7 +51,6 @@ __global__ void SimpsonMethod(double* sum_Dev, double* cut_Dev, double a, double
 	if (i % 2 == 1)
 		//расчет нечетных внутренних значений
 		sum_Dev[i] = 2 * func(a + h * i);
-
 }
 
 //€дро дл€ √ауса
