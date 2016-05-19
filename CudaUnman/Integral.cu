@@ -5,20 +5,24 @@
 #define BLOCK_SIZE 64
 
 //прототип функции с подынтегральной функцией, которая передается из C#
-//typedef  double(*FType)(float x);
+//typedef  double(*FType)(double x);
 
 //подынтегральная функция
-__device__ double func(float x) {
+__device__ double func(double x) {
 	return (x * x);
 }
 
+//подынтегральная функция (вызов с хоста)
+__host__ __device__ double funcHost(double x){
+	return x*x;
+}
 
 //ядро для Симпсона 3/8
-__global__ void SimpsonMethod_3_8(float* sum_Dev, float* cut_Dev, float a, float b, int n) {
+__global__ void SimpsonMethod_3_8(double* sum_Dev, double* cut_Dev, double a, double b, int n) {
 
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
 
-	float h = (b - a) / n;
+	double h = (b - a) / n;
 
 	if (i == 0)
 		//расчет значений на границах
@@ -35,35 +39,27 @@ __global__ void SimpsonMethod_3_8(float* sum_Dev, float* cut_Dev, float a, float
 }
 
 //ядро для Симпсона
-__global__ void SimpsonMethod(float* sum_Dev, float* cut_Dev, float a, float b, int n/*, FType func*/) {
+__global__ void SimpsonMethod(double* sum_Dev, double* cut_Dev, double a, double b, int n/*, FType func*/) {
 
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
 
-	float h = (b - a) / n;
+	double h = (b - a) / n;
 
-	//расчет массива разбиений
-	cut_Dev[i] = h * i;
-
-	if (i != 0 && i % 2 == 0 && i != n - 1)
+	if (i % 2 == 0)
 		//расчет четных внутренних значений
-		sum_Dev[i] = 4 * func(a + cut_Dev[i]);
-	if (i != 0 && i % 2 == 1 && i != n - 1)
+		sum_Dev[i] = 4 * func(a + h * i);
+	if (i % 2 == 1)
 		//расчет нечетных внутренних значений
-		sum_Dev[i] = 2 * func(a + cut_Dev[i]);
-	if (i == 0)
-		//расчет значения левой границы
-		sum_Dev[i] = func(a);
-	if (i == n - 1)
-		//расчет значения правой границы
-		sum_Dev[i] = func(b);
+		sum_Dev[i] = 2 * func(a + h * i);
+
 }
 
 //ядро для Гауса
-__global__ void GaussMethod(float* sum_Dev, float* xm_Dev, float* cm_Dev, float a, float b, int n, int point) {
+__global__ void GaussMethod(double* sum_Dev, double* xm_Dev, double* cm_Dev, double a, double b, int n, int point) {
 
 	int j = blockDim.x * blockIdx.x + threadIdx.x;
 
-	float h = (b - a) / n;
+	double h = (b - a) / n;
 
 	for (int i = 0; i < point; i++)
 		//расчет значения интеграла по числу точек
@@ -77,13 +73,13 @@ double Compute(float a, float b, int n, void* Function, int method) {
 	//получаем указатель на функцию из C#
 	//FType F = (FType)(Function);
 
-	float* sum = new float[n];
-	float* sum_Dev = NULL;
-	float* cut_Dev = NULL;
-	float h = (b - a) / n;
+	double* sum = new double[n];
+	double* sum_Dev = NULL;
+	double* cut_Dev = NULL;
+	double h = (b - a) / n;
 
-	cudaMalloc((void**)&sum_Dev, n * sizeof(float));
-	cudaMalloc((void**)&cut_Dev, n * sizeof(float));
+	cudaMalloc((void**)&sum_Dev, n * sizeof(double));
+	cudaMalloc((void**)&cut_Dev, n * sizeof(double));
 
 	int gridSizeX = (n / BLOCK_SIZE) + ((n % BLOCK_SIZE) > 0 ? 1 : 0);
 	dim3 threads(BLOCK_SIZE, 1);
@@ -104,14 +100,17 @@ double Compute(float a, float b, int n, void* Function, int method) {
 
 	cudaThreadSynchronize();
 
-	cudaMemcpy(sum, sum_Dev, n * sizeof(float), cudaMemcpyDeviceToHost);
+	cudaMemcpy(sum, sum_Dev, n * sizeof(double), cudaMemcpyDeviceToHost);
 	cudaFree(sum_Dev);
 	cudaFree(cut_Dev);
 
 	//выполнение редукции результатов, полученных с device
-	float result = 0;
+	double result = 0;
 	for (int j = 0; j < n; j++)
 		result += sum[j];
+
+	if (method == 1)
+		result += funcHost(a) + funcHost(b) + 4 * funcHost(a + (n / 2 - 1)*h);
 
 	cudaFree(sum_Dev);
 	cudaFree(cut_Dev);
@@ -131,14 +130,14 @@ double Compute(float a, float b, int n, void* Function, int method) {
 
 //перегруженная функция выделения памяти и вызова ядра для метода Гауса
 double Compute(float a, float b, int n, void* Function, int method, int point) {
-	float h = (b - a) / n;
-	float* sum = new float[n];
-	float* sum_Dev = NULL;
-	float* xm_Dev = NULL;
-	float* cm_Dev = NULL;
+	double h = (b - a) / n;
+	double* sum = new double[n];
+	double* sum_Dev = NULL;
+	double* xm_Dev = NULL;
+	double* cm_Dev = NULL;
 
-	float* xm = new float[point];
-	float* cm = new float[point];
+	double* xm = new double[point];
+	double* cm = new double[point];
 
 	//выбор значений коэффициентов для расчета (в зависимости от выбранного количества точек)
 	switch (point) {
@@ -167,12 +166,12 @@ double Compute(float a, float b, int n, void* Function, int method, int point) {
 		cm[3] = 0.3478548;
 	}
 
-	cudaMalloc((void**)&sum_Dev, n * sizeof(float));
-	cudaMalloc((void**)&xm_Dev, point * sizeof(float));
-	cudaMalloc((void**)&cm_Dev, point * sizeof(float));
+	cudaMalloc((void**)&sum_Dev, n * sizeof(double));
+	cudaMalloc((void**)&xm_Dev, point * sizeof(double));
+	cudaMalloc((void**)&cm_Dev, point * sizeof(double));
 
-	cudaMemcpy(xm_Dev, xm, point * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpy(cm_Dev, cm, point * sizeof(float), cudaMemcpyHostToDevice);
+	cudaMemcpy(xm_Dev, xm, point * sizeof(double), cudaMemcpyHostToDevice);
+	cudaMemcpy(cm_Dev, cm, point * sizeof(double), cudaMemcpyHostToDevice);
 
 	int gridSizeX = (n / BLOCK_SIZE) + ((n % BLOCK_SIZE) > 0 ? 1 : 0);
 	dim3 threads(BLOCK_SIZE, 1);
@@ -181,10 +180,10 @@ double Compute(float a, float b, int n, void* Function, int method, int point) {
 	GaussMethod <<<blocks, threads >>>(sum_Dev, xm_Dev, cm_Dev, a, b, n, point);
 	cudaThreadSynchronize();
 
-	cudaMemcpy(sum, sum_Dev, n * sizeof(float), cudaMemcpyDeviceToHost);
+	cudaMemcpy(sum, sum_Dev, n * sizeof(double), cudaMemcpyDeviceToHost);
 
 	//выполнение редукции результатов, полученных с device
-	float result = 0;
+	double result = 0;
 	for (int j = 0; j < n; j++)
 		result += sum[j];
 
