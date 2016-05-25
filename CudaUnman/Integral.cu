@@ -30,10 +30,10 @@ __global__ void SimpsonMethod_3_8(double* sum_Dev, double* cut_Dev, double a, do
 	if (i == 1)
 		//расчет смещенных значений на границах
 		sum_Dev[i] = ((7.0 / 6.0) * (func(a + h) + func(b - h)));
-	if (i == 3)
+	if (i == 2)
 		//расчет смещенных значений на границах
 		sum_Dev[i] = ((23.0 / 24.0) * (func(a + 2 * h) + func(b - 2 * h)));
-	if (i > 3)
+	if (i > 2 && i!=n-1)
 		//расчет внутренних значений
 		sum_Dev[i] = func(a + (i - 1) * h);
 }
