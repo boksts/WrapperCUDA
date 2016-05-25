@@ -8,14 +8,10 @@
 //typedef  double(*FType)(double x);
 
 //подынтегральная функция
-__device__ double func(double x) {
+__host__ __device__ double func(double x) {
 	return (x * x);
 }
 
-//подынтегральная функция (вызов с хоста)
-__host__ __device__ double funcHost(double x){
-	return x*x;
-}
 
 //ядро для Симпсона 3/8
 __global__ void SimpsonMethod_3_8(double* sum_Dev, double* cut_Dev, double a, double b, int n) {
@@ -84,9 +80,12 @@ double Compute(float a, float b, int n, void* Function, int method) {
 	dim3 threads(BLOCK_SIZE, 1);
 	dim3 blocks(gridSizeX, 1);
 
+	double result=0;
+
 	switch (method) {
 	case 1:
 		{
+			result = func(a) + func(b) + 4 * func(a + (n / 2 - 1)*h);
 			SimpsonMethod << <blocks, threads >>>(sum_Dev, cut_Dev, a, b, n);
 			break;
 		}
@@ -104,12 +103,8 @@ double Compute(float a, float b, int n, void* Function, int method) {
 	cudaFree(cut_Dev);
 
 	//выполнение редукции результатов, полученных с device
-	double result = 0;
 	for (int j = 0; j < n; j++)
 		result += sum[j];
-
-	if (method == 1)
-		result += funcHost(a) + funcHost(b) + 4 * funcHost(a + (n / 2 - 1)*h);
 
 	cudaFree(sum_Dev);
 	cudaFree(cut_Dev);
